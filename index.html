@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plataforma Completa - Aprende Español</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    
+    :root{
+      --bg:#0f172a;      /* fondo azul oscuro */
+      --card:#1e293b;    /* gris azulado */
+      --accent:#3b82f6;  /* azul brillante */
+      --muted:#10b981;   /* verde esmeralda */
+      --text:#ffffff;    /* texto blanco */
+    }
+
+    body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text)}
+    .glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(6px)}
+    a{color:var(--accent)}
+    .btn-primary{background:var(--accent)}
+    .btn-accent{background:var(--muted)}
+    .shadow-soft{box-shadow:0 8px 30px rgba(0,0,0,0.4)}
+    /* simple grid for gallery */
+  </style>
+</head>
+<body>
+  <!-- APP (single file SPA) -->
+  <header class="py-6 px-6 glass shadow-soft sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#7b2ea6] to-[#b266ff] flex items-center justify-center text-xl font-bold">ES</div>
+        <div>
+          <h1 class="text-xl font-bold">Aprende Español</h1>
+          <div class="text-xs text-[#e6d9ff]">Comunidad · Clases · Recursos</div>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#home" class="hover:underline">Inicio</a>
+        <a href="#cursos" class="hover:underline">Cursos</a>
+        <a href="#horarios" class="hover:underline">Horarios</a>
+        <a href="#eventos" class="hover:underline">Eventos</a>
+        <a href="#foro" class="hover:underline">Foro</a>
+        <a href="#galeria" class="hover:underline">Galería</a>
+        <a href="#recursos" class="hover:underline">Recursos</a>
+        <a href="#contacto" class="hover:underline">Contacto</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="openSignUp" class="px-4 py-2 rounded-2xl btn-primary text-sm text-white">Inscribirme</button>
+        <button id="openLogin" class="px-3 py-2 rounded-2xl border border-white/10 text-sm">Entrar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto py-10 px-6 space-y-12">
+    <!-- HERO -->
+    <section id="home" class="grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h2 class="text-4xl font-bold mb-4">Habla español con confianza — desde el primer día</h2>
+        <p class="leading-relaxed text-[#e6d9ff] mb-6">Clases prácticas, comunidad activa, recursos descargables y eventos en vivo. Nuestro curso combina metodología comunicativa con actividades culturales para que aprendas rápido y aplicado al mundo real.</p>
+        <div class="flex gap-4">
+          <a href="#cursos" class="px-6 py-3 rounded-2xl btn-primary text-white font-semibold shadow">Ver cursos</a>
+          <a href="#recursos" class="px-6 py-3 rounded-2xl btn-accent text-white font-semibold">Ver recursos</a>
+        </div>
+
+        <div class="mt-8 grid grid-cols-2 gap-4">
+          <div class="p-4 bg-[#471072] rounded-lg">
+            <h4 class="font-bold">Precio</h4>
+            <p class="text-sm">Plan único: <span class="font-bold text-xl">$99 USD</span> — acceso completo, foros y certificado.</p>
+          </div>
+          <div class="p-4 bg-[#471072] rounded-lg">
+            <h4 class="font-bold">Duración</h4>
+            <p class="text-sm">12 semanas (3 niveles) + eventos mensuales y tutorías opcionales.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-lg glass shadow-soft">
+        <h3 class="text-2xl font-bold mb-4">Inscríbete hoy</h3>
+        <p class="text-sm mb-4">Rellena tus datos y recibe acceso inmediato a contenido gratuito de bienvenida.</p>
+        <form id="signupForm" class="space-y-3">
+          <input id="name" placeholder="Tu nombre" class="w-full p-3 rounded text-black" />
+          <input id="email" placeholder="Correo electrónico" class="w-full p-3 rounded text-black" />
+          <select id="plan" class="w-full p-3 rounded text-black">
+            <option value="standard">Plan Estándar - $99 USD</option>
+            <option value="premium">Plan Premium - $149 USD (incluye tutoría 1:1)</option>
+          </select>
+          <div class="flex gap-3">
+            <button type="button" id="signupBtn" class="px-4 py-2 rounded-2xl btn-primary">Inscribirme</button>
+            <button type="button" id="freeTrial" class="px-4 py-2 rounded-2xl btn-accent">Prueba gratis</button>
+          </div>
+          <p id="signupMsg" class="text-sm text-green-200 hidden">¡Gracias! Te hemos enviado información al correo.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- CURSOS: lista detallada -->
+    <section id="cursos" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center color2">Nuestros cursos</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <article class="p-6 rounded-lg glass shadow-soft">
+          <img src="https://via.placeholder.com/600x320.png?text=A1+-+Principiante" alt="A1" class="w-full rounded mb-4">
+          <h4 class="font-bold text-xl mb-2">A1 — Principiante</h4>
+          <p class="text-sm mb-3">Para quienes inician desde cero. Enfocado en vocabulario esencial, saludos, presentación personal y expresiones cotidianas.</p>
+          <ul class="text-sm list-disc list-inside mb-3">
+            <li>8 semanas</li>
+            <li>2 clases en vivo/semana</li>
+            <li>Ejercicios y foros</li>
+          </ul>
+          <button class="px-4 py-2 rounded btn-primary">Inscribirme</button>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="p-6 rounded-lg glass shadow-soft">
+          <img src="https://via.placeholder.com/600x320.png?text=A2+-+Intermedio" alt="A2" class="w-full rounded mb-4">
+          <h4 class="font-bold text-xl mb-2">A2 — Intermedio</h4>
+          <p class="text-sm mb-3">Mejora la gramática básica, tiempos verbales simples y conversación en situaciones cotidianas.</p>
+          <ul class="text-sm list-disc list-inside mb-3">
+            <li>12 semanas</li>
+            <li>2-3 clases/semana</li>
+            <li>Clínicas de pronunciación</li>
+          </ul>
+          <button class="px-4 py-2 rounded btn-primary">Inscribirme</button>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="p-6 rounded-lg glass shadow-soft">
+          <img src="https://via.placeholder.com/600x320.png?text=B1+-+Intermedio+alto" alt="B1" class="w-full rounded mb-4">
+          <h4 class="font-bold text-xl mb-2">B1 — Intermedio Alto</h4>
+          <p class="text-sm mb-3">Conversaciones más complejas, narración de experiencias, y comprensión de textos y audios más largos.</p>
+          <ul class="text-sm list-disc list-inside mb-3">
+            <li>12 semanas</li>
+            <li>Sesiones temáticas semanales</li>
+            <li>Proyecto final</li>
+          </ul>
+          <button class="px-4 py-2 rounded btn-primary">Inscribirme</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- HORARIOS: calendario sencillo -->
+    <section id="horarios" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Horarios</h3>
+      <p class="text-center text-sm text-[#e6d9ff]">Selecciona tu zona horaria y reserva tu clase. Las horas son aproximadas y pueden variar según el grupo.</p>
+      <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-lg glass">
+          <h4 class="font-bold mb-3">Calendario semanal</h4>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left"><th>Día</th><th>Hora (GMT-5)</th><th>Curso</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Lunes</td><td>17:00 - 18:30</td><td>A1 - Conversación</td></tr>
+              <tr><td>Martes</td><td>18:00 - 19:30</td><td>A2 - Gramática</td></tr>
+              <tr><td>Miércoles</td><td>17:00 - 18:30</td><td>B1 - Comprensión</td></tr>
+              <tr><td>Jueves</td><td>19:00 - 20:30</td><td>Clínica de Pronunciación</td></tr>
+              <tr><td>Viernes</td><td>16:00 - 17:30</td><td>Conversación general</td></tr>
+            </tbody>
+          </table>
+          <div class="mt-4">
+            <label class="text-sm">Zona horaria:</label>
+            <select id="tz" class="w-full p-2 rounded text-black">
+              <option value="GMT-5">GMT-5 (Bogotá)</option>
+              <option value="GMT+1">GMT+1 (Madrid)</option>
+              <option value="GMT-3">GMT-3 (Buenos Aires)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-lg glass">
+          <h4 class="font-bold mb-3">Reservar una clase</h4>
+          <p class="text-sm mb-3">Escoge día y hora disponibles. Aquí simulamos la reserva (no integrada con pasarelas reales).</p>
+          <input id="res-name" placeholder="Tu nombre" class="w-full p-2 mb-2 rounded text-black">
+          <input id="res-email" placeholder="Correo" class="w-full p-2 mb-2 rounded text-black">
+          <select id="res-day" class="w-full p-2 mb-2 rounded text-black">
+            <option>Lunes 17:00</option>
+            <option>Martes 18:00</option>
+            <option>Miércoles 17:00</option>
+            <option>Jueves 19:00</option>
+            <option>Viernes 16:00</option>
+          </select>
+          <button id="reserveBtn" class="px-4 py-2 rounded btn-primary">Reservar</button>
+          <p id="reserveMsg" class="text-sm text-green-200 hidden mt-2">Reserva confirmada (simulada). Revisa tu correo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTOS (lista dinámica) -->
+    <section id="eventos" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Eventos y actividades</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-4 rounded-lg glass">
+          <h4 class="font-bold">Charla: Cultura Colombiana</h4>
+          <p class="text-sm">Invitado especial, conversación y preguntas en vivo. Fecha: 2025-10-05</p>
+          <button class="mt-3 px-3 py-2 rounded btn-accent">Apuntarme</button>
+        </div>
+        <div class="p-4 rounded-lg glass">
+          <h4 class="font-bold">Taller de pronunciación</h4>
+          <p class="text-sm">Actividad práctica con ejercicios de fonética. Fecha: 2025-10-12</p>
+          <button class="mt-3 px-3 py-2 rounded btn-accent">Apuntarme</button>
+        </div>
+        <div class="p-4 rounded-lg glass">
+          <h4 class="font-bold">Clínica de redacción</h4>
+          <p class="text-sm">Corrección en vivo de textos y consejos de estilo. Fecha: 2025-10-19</p>
+          <button class="mt-3 px-3 py-2 rounded btn-accent">Apuntarme</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORO: posts con localStorage (simple) -->
+    <section id="foro" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Foro de la comunidad</h3>
+      <p class="text-sm text-[#e6d9ff] text-center">Publica preguntas, comparte recursos y responde a otros estudiantes. Los posts se guardan localmente en tu navegador (simulación).</p>
+      <div class="max-w-4xl mx-auto">
+        <textarea id="postContent" placeholder="Escribe tu publicación..." class="w-full p-3 rounded text-black mb-2"></textarea>
+        <div class="flex gap-2">
+          <input id="postAuthor" placeholder="Tu nombre" class="p-2 rounded text-black flex-1">
+          <button id="postBtn" class="px-4 py-2 rounded btn-primary">Publicar</button>
+        </div>
+        <div id="posts" class="mt-6 space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section id="galeria" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Galería</h3>
+      <p class="text-sm text-[#e6d9ff] text-center">Fotos de clases, actividades y eventos.</p>
+      <div class="grid md:grid-cols-3 gap-4">
+        <img src="https://via.placeholder.com/400x250.png?text=Clase+1" alt="clase1" class="rounded">
+        <img src="https://via.placeholder.com/400x250.png?text=Evento+comunitario" alt="evento" class="rounded">
+        <img src="https://via.placeholder.com/400x250.png?text=Taller+de+pronunciacion" alt="taller" class="rounded">
+      </div>
+    </section>
+
+    <!-- RECURSOS: descargables y materiales -->
+    <section id="recursos" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Recursos y material</h3>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="p-4 rounded glass">
+          <h4 class="font-bold">Paquete de bienvenida</h4>
+          <p class="text-sm">Incluye guías rápidas, listas de vocabulario y ejercicios.</p>
+          <a href="#" class="inline-block mt-3 px-4 py-2 rounded btn-accent">Descargar PDF</a>
+        </div>
+        <div class="p-4 rounded glass">
+          <h4 class="font-bold">Podcasts</h4>
+          <p class="text-sm">Episodios cortos para practicar escucha y pronunciación.</p>
+          <a href="#" class="inline-block mt-3 px-4 py-2 rounded btn-accent">Escuchar</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO y soporte -->
+    <section id="contacto" class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Contacto y soporte</h3>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="p-4 rounded glass">
+          <h4 class="font-bold">Escríbenos</h4>
+          <p class="text-sm">Para dudas académicas: <a href="mailto:soporte@ejemplo.com">soporte@ejemplo.com</a></p>
+          <p class="text-sm">Ventas y pagos: <a href="mailto:ventas@ejemplo.com">ventas@ejemplo.com</a></p>
+        </div>
+        <div class="p-4 rounded glass">
+          <h4 class="font-bold">Formulario</h4>
+          <input id="contactName" placeholder="Nombre" class="w-full p-2 mb-2 rounded text-black">
+          <input id="contactEmail" placeholder="Correo" class="w-full p-2 mb-2 rounded text-black">
+          <textarea id="contactMsg" placeholder="Mensaje" class="w-full p-2 mb-2 rounded text-black"></textarea>
+          <button id="contactSend" class="px-4 py-2 rounded btn-primary">Enviar mensaje</button>
+          <p id="contactOk" class="text-sm text-green-200 hidden mt-2">Mensaje enviado (simulado).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS y FAQ -->
+    <section class="space-y-6">
+      <h3 class="text-3xl font-bold text-center">Testimonios</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-4 rounded glass">“Me ayudaron a mejorar mi pronunciación en semanas.” — Ana</div>
+        <div class="p-4 rounded glass">“Excelente enfoque comunicativo.” — Pedro</div>
+        <div class="p-4 rounded glass">“Los eventos me motivaron a seguir aprendiendo.” — María</div>
+      </div>
+
+      <h3 class="text-2xl font-bold mt-6">Preguntas frecuentes</h3>
+      <div class="space-y-2">
+        <details class="p-3 rounded glass"><summary class="font-semibold">¿Necesito nivel previo?</summary><div class="mt-2 text-sm">No, tenemos cursos desde A1 hasta B1. Además hay materiales para practicar por cuenta propia.</div></details>
+        <details class="p-3 rounded glass"><summary class="font-semibold">¿Cómo pago?</summary><div class="mt-2 text-sm">Aceptamos pagos con tarjeta o transferencia (simulado en esta demo).</div></details>
+        <details class="p-3 rounded glass"><summary class="font-semibold">¿Recibo certificado?</summary><div class="mt-2 text-sm">Sí, al completar el curso recibirás un certificado digital.</div></details>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="py-8 bg-[#4b137a] text-center text-sm">
+    <div class="max-w-6xl mx-auto">Hecho por Samuel y Juan Jose Gómez · &copy; 2025 · <a href="#contacto">Contacto</a></div>
+  </footer>
+
+  <!-- Modales y scripts -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50">
+    <div class="w-full max-w-md p-6 bg-white rounded text-black">
+      <h4 class="font-bold mb-2">Iniciar sesión (demo)</h4>
+      <input id="loginEmail" placeholder="Correo" class="w-full p-2 mb-2 rounded">
+      <input id="loginPass" placeholder="Contraseña" type="password" class="w-full p-2 mb-2 rounded">
+      <div class="flex gap-2 justify-end">
+        <button id="closeModal" class="px-3 py-2 rounded border">Cerrar</button>
+        <button id="doLogin" class="px-3 py-2 rounded btn-primary text-white">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple SPA helpers: scroll to anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth'});
+      });
+    });
+
+    // Signup simulation
+    document.getElementById('signupBtn').addEventListener('click',()=>{
+      document.getElementById('signupMsg').classList.remove('hidden');
+      setTimeout(()=>document.getElementById('signupMsg').classList.add('hidden'),4000);
+    });
+    document.getElementById('freeTrial').addEventListener('click',()=>alert('Prueba gratis activada (simulación).'));
+
+    // Reserve simulation
+    document.getElementById('reserveBtn').addEventListener('click',()=>{
+      document.getElementById('reserveMsg').classList.remove('hidden');
+      setTimeout(()=>document.getElementById('reserveMsg').classList.add('hidden'),4000);
+    });
+
+    // Contact form
+    document.getElementById('contactSend').addEventListener('click',()=>{
+      document.getElementById('contactOk').classList.remove('hidden');
+      setTimeout(()=>document.getElementById('contactOk').classList.add('hidden'),4000);
+    });
+
+    // Foro: save posts to localStorage
+    const postsEl = document.getElementById('posts');
+    function loadPosts(){
+      postsEl.innerHTML='';
+      const posts = JSON.parse(localStorage.getItem('foro_posts')||'[]');
+      posts.slice().reverse().forEach(p=>{
+        const card = document.createElement('div');
+        card.className='p-4 rounded glass';
+        card.innerHTML = `<div class="text-sm text-[#dcd2ff]"><strong>${p.author}</strong> · <small>${new Date(p.date).toLocaleString()}</small></div><p class="mt-2 text-sm text-black/90">${p.text}</p>`;
+        postsEl.appendChild(card);
+      });
+    }
+    document.getElementById('postBtn').addEventListener('click',()=>{
+      const text = document.getElementById('postContent').value.trim();
+      const author = document.getElementById('postAuthor').value.trim()||'Anonimo';
+      if(!text) return alert('Escribe algo antes.');
+      const posts = JSON.parse(localStorage.getItem('foro_posts')||'[]');
+      posts.push({author,text,date:Date.now()});
+      localStorage.setItem('foro_posts',JSON.stringify(posts));
+      document.getElementById('postContent').value='';
+      document.getElementById('postAuthor').value='';
+      loadPosts();
+    });
+    loadPosts();
+
+    // Simple chat using localStorage channel so different tabs can "see" messages (simulation)
+    const chatBox = document.getElementById('chat-box');
+    const chatInput = document.getElementById('chat-input');
+    function loadChat(){
+      const chat = JSON.parse(localStorage.getItem('chat_msgs')||'[]');
+      chatBox.innerHTML = '';
+      chat.forEach(m=>{
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>${m.author}:</strong> ${m.text}`;
+        chatBox.appendChild(p);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    function postChat(author,text){
+      const chat = JSON.parse(localStorage.getItem('chat_msgs')||'[]');
+      chat.push({author,text,date:Date.now()});
+      localStorage.setItem('chat_msgs',JSON.stringify(chat));
+      loadChat();
+    }
+    // initial load
+    loadChat();
+    // send message from chat box
+    window.sendMessage = function(){
+      if(chatInput.value.trim()=='') return;
+      postChat('Tú',chatInput.value.trim());
+      chatInput.value='';
+    }
+    // listen for storage events (other tabs)
+    window.addEventListener('storage',e=>{
+      if(e.key==='chat_msgs' || e.key==='foro_posts'){
+        loadChat(); loadPosts();
+      }
+    });
+
+    // Modals (login)
+    document.getElementById('openLogin').addEventListener('click',()=>document.getElementById('modal').classList.remove('hidden'));
+    document.getElementById('closeModal').addEventListener('click',()=>document.getElementById('modal').classList.add('hidden'));
+    document.getElementById('doLogin').addEventListener('click',()=>{alert('Sesión iniciada (simulado).');document.getElementById('modal').classList.add('hidden')});
+
+    // Signup and sign up header buttons open form scroll
+    document.getElementById('openSignUp').addEventListener('click',()=>{document.getElementById('signupForm').scrollIntoView({behavior:'smooth'});});
+
+    // Simple pagination for courses buttons
+    document.querySelectorAll('article button').forEach(b=>b.addEventListener('click',()=>alert('Formulario de inscripción (simulado).')));
+  </script>
+</body>
+</html>
