@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title> Postulaciones The Blaze  | Postulaciones</title>
+<title>The Blaze Java | Postulaciones</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -71,85 +71,67 @@ button{
     background:#1c1f26;
     padding:30px;
     border-radius:16px;
-    max-width:500px;
-    width:90%
+    max-width:600px;
+    width:90%;
+    text-align:left;
+    max-height:80vh;
+    overflow-y:auto; /* Scroll interno */
 }
 .modal h3{margin-top:0}
 label{display:block;margin-top:15px;font-size:14px}
-input{
+input, textarea{
     width:100%;
     padding:10px;
     margin-top:5px;
     border-radius:8px;
     border:none;
     background:#2b2d31;
-    color:white
+    color:white;
 }
-.modal button{margin-top:20px;width:100%;background:#5865f2;color:white}
+textarea{resize:vertical;}
+.modal button{margin-top:20px;width:100%;background:#5865f2;color:white;cursor:pointer}
 
-/* Botón Discord */
-#btn-discord-login {
-  background: #5865F2;
-  color: white;
-  font-weight: bold;
-  border-radius: 10px;
-  padding: 14px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto 40px auto;
-  display: block;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
+/* Botón revisar postulaciones */
+#btn-ver-postulaciones {
+  background:#5865f2;
+  color:white;
+  border-radius:10px;
+  padding:12px;
+  cursor:pointer;
+  width:100%;
+  max-width:300px;
+  margin:20px auto;
+  display:block;
 }
-#btn-discord-login:hover {
-  background: #4752c4;
+#btn-ver-postulaciones:hover{opacity:0.85;}
+
+/* Botón eliminar dentro del modal */
+.btn-eliminar{
+  background:#f04747;
+  color:white;
+  padding:6px 12px;
+  border-radius:6px;
+  font-size:12px;
+  margin-top:5px;
+  cursor:pointer;
 }
+.btn-eliminar:hover{opacity:0.8;}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-
 <h1>Postulaciones The Blaze Java</h1>
 
-<!-- Botón para iniciar sesión con Discord -->
-<button id="btn-discord-login" onclick="loginDiscord()">Iniciar sesión con Discord</button>
-
 <div class="cards">
-
-<!-- AYUDANTE -->
-<div class="card">
-<div>
-<div class="icon">📄</div>
-<h2>Rango AYUDANTE</h2>
-<p>Postulación para formar parte del staff como Ayudante.</p>
-<div class="alert" id="alert-ayudante"></div>
-</div>
-<button id="btn-ayudante"></button>
-<button class="admin" onclick="adminToggle('ayudante')">Admin: Abrir / Cerrar</button>
-</div>
-
-<!-- CREADOR -->
-<div class="card">
-<div>
-<div class="icon">📄</div>
-<h2>CREADOR DE CONTENIDO</h2>
-<p>Postulación para creadores oficiales del servidor.</p>
-<div class="alert" id="alert-creador"></div>
-</div>
-<button id="btn-creador"></button>
-<button class="admin" onclick="adminToggle('creador')">Admin: Abrir / Cerrar</button>
-</div>
 
 <!-- SOPORTE -->
 <div class="card">
 <div>
 <div class="icon">📄</div>
 <h2>Rango SOPORTE</h2>
-<p>Postulación para el equipo de soporte.</p>
+<p>Postulación para formar parte del equipo de soporte del clan.</p>
 <div class="alert" id="alert-soporte"></div>
 </div>
 <button id="btn-soporte"></button>
@@ -157,38 +139,30 @@ input{
 </div>
 
 </div>
-</div>
+
+<!-- Botón para que admins vean postulaciones -->
+<button id="btn-ver-postulaciones" onclick="mostrarPostulaciones()">Ver postulaciones enviadas</button>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
 <div class="modal-content">
 <h3 id="modalTitle"></h3>
 <div id="questions"></div>
-<button onclick="cerrar()">Continuar</button>
+<button onclick="cerrar()">Enviar Postulación</button>
 </div>
 </div>
 
 <script>
 const preguntas = {
-ayudante:[
-"¿Cuántos años tienes?",
-"¿Tienes experiencia como staff?",
-"¿Cuántas horas puedes dedicar?"
-],
-creador:[
-"¿En qué plataforma creas contenido?",
-"¿Cuántos seguidores tienes?",
-"¿Qué tipo de contenido haces?"
-],
 soporte:[
-"¿Tienes conocimientos técnicos?",
-"¿Has trabajado en soporte antes?",
-"¿Sabes trabajar bajo presión?"
+"Tu nombre de Discord:",
+"¿Por qué quieres ser soporte?",
+"¿Cuánto tiempo podrías dedicar al clan?",
+"¿Tienes experiencia en soporte o atención a jugadores?"
 ]
 };
 
-const adminPassword = "valetroyeroc";
-const userPassword = "valetroyeroc";
+const adminPassword = "1.21 #3 parcelas";
 
 function estado(r){ return localStorage.getItem(r) === "abierto"; }
 
@@ -226,26 +200,28 @@ function adminToggle(r){
 
 function abrir(r){
   document.getElementById("modal").style.display = "flex";
-  document.getElementById("modalTitle").textContent = "Preguntas previas - " + r.toUpperCase();
+  document.getElementById("modalTitle").textContent = "Postulación - " + r.toUpperCase();
   const q = document.getElementById("questions");
   q.innerHTML = "";
   preguntas[r].forEach(p=>{
-    q.innerHTML += `<label>${p}</label><input>`;
+      if(p.toLowerCase().includes("por qué") || p.toLowerCase().includes("experiencia") || p.toLowerCase().includes("cuánto tiempo")){
+          q.innerHTML += `<label>${p}</label><textarea required></textarea>`;
+      } else {
+          q.innerHTML += `<label>${p}</label><input type="text" required>`;
+      }
   });
 }
 
 function cerrar() {
-  const inputPass = prompt("Para enviar tu postulación, ingresa la contraseña:");
-  if(inputPass !== userPassword){
-    alert("Contraseña incorrecta. No se envió la postulación.");
+  const modalTitle = document.getElementById("modalTitle").textContent.toLowerCase().replace("postulación - ", "");
+  const inputs = document.querySelectorAll("#questions input, #questions textarea");
+  const respuestas = [];
+  inputs.forEach(input => respuestas.push(input.value.trim()));
+
+  if(!respuestas[0]){
+    alert("Debes ingresar tu nombre de Discord.");
     return;
   }
-
-  const modalTitle = document.getElementById("modalTitle").textContent.toLowerCase().replace("preguntas previas - ", "");
-  const inputs = document.querySelectorAll("#questions input");
-  const respuestas = [];
-
-  inputs.forEach(input => respuestas.push(input.value.trim()));
 
   let actuales = JSON.parse(localStorage.getItem("postulaciones_" + modalTitle)) || [];
   actuales.push(respuestas);
@@ -253,41 +229,25 @@ function cerrar() {
 
   document.getElementById("modal").style.display = "none";
   alert("Postulación enviada con éxito.");
-
-  mostrarVerPostulaciones();
-}
-
-function mostrarVerPostulaciones() {
-  if(document.getElementById("btn-ver-postulaciones")) return;
-
-  const pass = prompt("Ingresa la contraseña para acceder a ver postulaciones:");
-  if(pass !== userPassword) return;
-
-  const btn = document.createElement("button");
-  btn.id = "btn-ver-postulaciones";
-  btn.textContent = "Ver postulaciones enviadas";
-  btn.style.margin = "20px auto";
-  btn.style.display = "block";
-  btn.style.background = "#5865f2";
-  btn.style.color = "white";
-  btn.style.borderRadius = "10px";
-  btn.style.padding = "12px";
-  btn.onclick = mostrarPostulaciones;
-  document.querySelector(".container").insertBefore(btn, document.querySelector(".cards"));
 }
 
 function mostrarPostulaciones() {
+  const pass = prompt("Ingresa la contraseña de administrador para ver las postulaciones:");
+  if(pass !== adminPassword){ alert("Contraseña incorrecta."); return; }
+
   let todasPostulaciones = "";
-  ["ayudante", "creador", "soporte"].forEach(rango => {
+  ["soporte"].forEach(rango => {
     const data = JSON.parse(localStorage.getItem("postulaciones_" + rango)) || [];
     if(data.length > 0) {
       todasPostulaciones += `<h3>Postulaciones para ${rango.toUpperCase()}</h3>`;
       data.forEach((respuestas, i) => {
+        todasPostulaciones += `<div style="border:1px solid #555; padding:10px; margin-bottom:10px; border-radius:10px;">`;
         todasPostulaciones += `<b>Postulación #${i+1}</b><br>`;
         preguntas[rango].forEach((preg, idx) => {
-          todasPostulaciones += `<i>${preg}:</i> ${respuestas[idx] || "No respondido"}<br>`;
+          todasPostulaciones += `<i>${preg}</i> ${respuestas[idx] || "No respondido"}<br>`;
         });
-        todasPostulaciones += "<hr>";
+        todasPostulaciones += `<button class="btn-eliminar" onclick="eliminarPostulacion('${rango}', ${i})">Eliminar</button>`;
+        todasPostulaciones += "</div>";
       });
     }
   });
@@ -301,18 +261,17 @@ function mostrarPostulaciones() {
   document.getElementById("modal").style.display = "flex";
 }
 
-function loginDiscord() {
-  const client_id = "1457099365205283028"; // tu ID de aplicación
-  const redirect_uri = encodeURIComponent("https://tuusuario.github.io/TheBlazeJava/callback"); // cambia tu GitHub Pages
-  const scope = encodeURIComponent("identify email");
-  const response_type = "code";
-
-  const url = `https://discord.com/api/oauth2/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}`;
-  window.location.href = url;
+function eliminarPostulacion(rango, index){
+  if(!confirm("¿Seguro que quieres eliminar esta postulación?")) return;
+  let data = JSON.parse(localStorage.getItem("postulaciones_" + rango)) || [];
+  data.splice(index, 1);
+  localStorage.setItem("postulaciones_" + rango, JSON.stringify(data));
+  mostrarPostulaciones(); // refresca la lista
 }
 
-["ayudante","creador","soporte"].forEach(r=>{
-  if(!localStorage.getItem(r)) localStorage.setItem(r,"cerrado");
+// Inicialización
+["soporte"].forEach(r=>{
+  if(!localStorage.getItem(r)) localStorage.setItem(r,"abierto");
   actualizar(r);
 });
 </script>
